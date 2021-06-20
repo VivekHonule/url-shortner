@@ -23,7 +23,7 @@ public class DefaultUrlShortnerService implements UrlShortnerService {
     @Override
     public URL shorten(URL url) throws UrlException {
         URL shortenedUrl = getIfPresent(url);
-        if (shortenedUrl.isShortenedUrlPresent()) {
+        if (shortenedUrl.getShortenedUrl() != null) {
             return shortenedUrl;
         } else {
             return computeShortenedUrl(url);

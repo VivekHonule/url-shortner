@@ -1,6 +1,7 @@
 package com.url.shortner.service;
 
 import com.url.shortner.model.URL;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -8,9 +9,15 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 class DefaultUrlShortnerServiceTest {
 
+    private UrlShortnerService shortnerService;
+
+    @BeforeEach
+    void setUp() {
+        shortnerService = new DefaultUrlShortnerService();
+    }
+
     @Test
     void testShortenReturnsAShortenedUrl() throws Exception {
-        UrlShortnerService shortnerService = new DefaultUrlShortnerService();
         URL url = new URL("http://www.abc.com/awxerdc123/new/new-url");
 
         URL shortenedUrl = shortnerService.shorten(url);
@@ -21,7 +28,6 @@ class DefaultUrlShortnerServiceTest {
 
     @Test
     void testTwoSameLongUrlsReturnSameShortenedUrls() throws Exception {
-        UrlShortnerService shortnerService = new DefaultUrlShortnerService();
         URL url1 = new URL("http://www.abc.com/awxerdc123/new/new-url");
         URL url2 = new URL("http://www.abc.com/awxerdc123/new/new-url");
 
@@ -34,7 +40,6 @@ class DefaultUrlShortnerServiceTest {
 
     @Test
     void testTwoDifferentLongUrlsReturnsDifferentShortenedUrls() throws Exception {
-        UrlShortnerService shortnerService = new DefaultUrlShortnerService();
         URL url1 = new URL("http://www.abc.com/awxerdc789/new/new-url1");
         URL url2 = new URL("http://www.abc.com/awxerdc123/new/new-url2");
 

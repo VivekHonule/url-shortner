@@ -19,11 +19,7 @@ public class UrlShortnerController {
     }
 
     @RequestMapping(value = "/shorten", method = RequestMethod.POST)
-    public URL shortenURL(@RequestBody URL url) {
-        try {
-            return shortnerService.shorten(url);
-        } catch (UrlException e) {
-            return new URL();
-        }
+    public URL shortenURL(@RequestBody URL url) throws UrlException {
+        return shortnerService.shorten(url);
     }
 }
