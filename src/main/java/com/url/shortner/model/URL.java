@@ -9,11 +9,6 @@ public class URL {
         this.longUrl = longUrl;
     }
 
-    public URL(String longUrl, String shortenedUrl) {
-        this.longUrl = longUrl;
-        this.shortenedUrl = shortenedUrl;
-    }
-
     public URL() {
     }
 

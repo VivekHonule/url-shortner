@@ -50,7 +50,7 @@ class DefaultUrlShortnerServiceTest {
     }
 
     @Test
-    void testShortenedUrlIsPresentIfAlreadyExist() throws Exception {
+    void testShortenedUrlIsReturnedIfAlreadyExist() throws Exception {
         URL url1 = new URL("http://www.abc.com/awxerdc567/new/new-url");
         URL url2 = new URL("http://www.abc.com/awxerdc567/new/new-url");
         URL shortenedUrl1 = shortnerService.shorten(url1);
