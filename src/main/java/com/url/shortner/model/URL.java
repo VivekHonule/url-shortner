@@ -32,4 +32,8 @@ public class URL {
     public void setShortenedUrl(String shortenedUrl) {
         this.shortenedUrl = shortenedUrl;
     }
+
+    public boolean isShortenedUrlPresent() {
+        return shortenedUrl != null;
+    }
 }

@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 class DefaultUrlShortnerServiceTest {
 
     @Test
-    void testShortenReturnsAShortenedUrl()throws Exception {
+    void testShortenReturnsAShortenedUrl() throws Exception {
         UrlShortnerService shortnerService = new DefaultUrlShortnerService();
         URL url = new URL("http://www.abc.com/awxerdc123/new/new-url");
 
@@ -20,7 +20,7 @@ class DefaultUrlShortnerServiceTest {
     }
 
     @Test
-    void testTwoSameLongUrlsReturnSameShortenedUrls()throws Exception {
+    void testTwoSameLongUrlsReturnSameShortenedUrls() throws Exception {
         UrlShortnerService shortnerService = new DefaultUrlShortnerService();
         URL url1 = new URL("http://www.abc.com/awxerdc123/new/new-url");
         URL url2 = new URL("http://www.abc.com/awxerdc123/new/new-url");
@@ -33,7 +33,7 @@ class DefaultUrlShortnerServiceTest {
     }
 
     @Test
-    void testTwoDifferentLongUrlsReturnsDifferentShortenedUrls()throws Exception {
+    void testTwoDifferentLongUrlsReturnsDifferentShortenedUrls() throws Exception {
         UrlShortnerService shortnerService = new DefaultUrlShortnerService();
         URL url1 = new URL("http://www.abc.com/awxerdc789/new/new-url1");
         URL url2 = new URL("http://www.abc.com/awxerdc123/new/new-url2");

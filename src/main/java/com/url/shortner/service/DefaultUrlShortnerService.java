@@ -4,9 +4,14 @@ import com.url.shortner.exception.UrlException;
 import com.url.shortner.model.URL;
 import org.springframework.stereotype.Component;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.StandardOpenOption;
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +22,15 @@ public class DefaultUrlShortnerService implements UrlShortnerService {
 
     @Override
     public URL shorten(URL url) throws UrlException {
+        URL shortenedUrl = getIfPresent(url);
+        if (shortenedUrl.isShortenedUrlPresent()) {
+            return shortenedUrl;
+        } else {
+            return computeShortenedUrl(url);
+        }
+    }
+
+    private URL computeShortenedUrl(URL url) throws UrlException {
         URL shortenedUrl = new URL(url.getLongUrl());
         try {
             MessageDigest messageDigest = MessageDigest.getInstance("MD5");
@@ -28,11 +42,56 @@ public class DefaultUrlShortnerService implements UrlShortnerService {
             String base62String = base62ToString(base62);
             String shortenedUrlStr = createShortenedUrl(base62String);
             shortenedUrl.setShortenedUrl(shortenedUrlStr);
-        } catch (NoSuchAlgorithmException e) {
+            save(shortenedUrl);
+        } catch (Exception e) {
             throw new UrlException("Error occured while shortening the url", e);
         }
-
         return shortenedUrl;
+    }
+
+    private URL getIfPresent(URL url) throws UrlException {
+        URL shortenedUrl = new URL();
+        File urlDir = getUrlDir();
+        if (!urlDir.exists()) {
+            return shortenedUrl;
+        }
+
+        File urls = new File(urlDir, "urls");
+        try (BufferedReader br = Files.newBufferedReader(urls.toPath())) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] split = line.split(" ");
+                String longUrl = url.getLongUrl();
+                if (longUrl.equals(split[0])) {
+                    shortenedUrl.setLongUrl(longUrl);
+                    shortenedUrl.setShortenedUrl(split[1]);
+                }
+            }
+        } catch (IOException e) {
+            throw new UrlException("Error occurred while reading url from file", e);
+        }
+        return shortenedUrl;
+    }
+
+    private File getUrlDir() {
+        String userHome = System.getProperty("user.home");
+        userHome = userHome.replace("\\", "/");
+        return new File(userHome, "url-shortner");
+    }
+
+    private void save(URL shortenedUrl) throws UrlException {
+        File urlDir = getUrlDir();
+        if (!urlDir.exists()) {
+            urlDir.mkdir();
+        }
+
+        File urls = new File(urlDir, "urls");
+        try (BufferedWriter bw = Files.newBufferedWriter(urls.toPath(), StandardOpenOption.CREATE, StandardOpenOption.APPEND)) {
+            bw.write(shortenedUrl.getLongUrl() + " " + shortenedUrl.getShortenedUrl());
+            bw.newLine();
+        } catch (IOException e) {
+            throw new UrlException("Error occurred while writing url to file", e);
+        }
     }
 
     private String createShortenedUrl(String base62String) {
