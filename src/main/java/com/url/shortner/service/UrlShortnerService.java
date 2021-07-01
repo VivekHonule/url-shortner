@@ -9,4 +9,6 @@ public interface UrlShortnerService {
     String BASE_URL = "http://www.short.com/";
 
     URL shorten(URL url) throws UrlException;
+
+    URL longUrl(URL url) throws UrlException;
 }

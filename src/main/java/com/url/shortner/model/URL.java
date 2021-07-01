@@ -13,6 +13,9 @@ public class URL {
     }
 
     public String getLongUrl() {
+        if (longUrl == null) {
+            return "";
+        }
         return longUrl;
     }
 
@@ -21,6 +24,9 @@ public class URL {
     }
 
     public String getShortenedUrl() {
+        if (shortenedUrl == null) {
+            return "";
+        }
         return shortenedUrl;
     }
 

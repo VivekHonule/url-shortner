@@ -22,4 +22,10 @@ public class UrlShortnerController {
     public URL shortenURL(@RequestBody URL url) throws UrlException {
         return shortnerService.shorten(url);
     }
+
+    @RequestMapping(value = "/long", method = RequestMethod.POST)
+    public URL getLongUrl(@RequestBody URL url) throws UrlException {
+        return shortnerService.longUrl(url);
+
+    }
 }

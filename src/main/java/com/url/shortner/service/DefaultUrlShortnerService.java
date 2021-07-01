@@ -30,6 +30,11 @@ public class DefaultUrlShortnerService extends AbstractUrlShortnerService {
     }
 
     @Override
+    public URL longUrl(URL url) throws UrlException {
+        return getIfPresent(url);
+    }
+
+    @Override
     protected URL computeShortenedUrl(URL url) throws UrlException {
         URL shortenedUrl = new URL(url.getLongUrl());
         try {
@@ -42,7 +47,8 @@ public class DefaultUrlShortnerService extends AbstractUrlShortnerService {
             String base62String = base62ToString(base62);
             String shortenedUrlStr = createShortenedUrl(base62String);
             shortenedUrl.setShortenedUrl(shortenedUrlStr);
-        } catch (Exception e) {            throw new UrlException("Error occured while shortening the url", e);
+        } catch (Exception e) {
+            throw new UrlException("Error occured while shortening the url", e);
         }
         return shortenedUrl;
     }
@@ -61,7 +67,8 @@ public class DefaultUrlShortnerService extends AbstractUrlShortnerService {
             while ((line = br.readLine()) != null) {
                 String[] split = line.split(" ");
                 String longUrl = url.getLongUrl();
-                if (longUrl.equals(split[0])) {
+                String shortUrl = url.getShortenedUrl();
+                if (longUrl.equals(split[0]) || shortUrl.equals(split[1])) {
                     shortenedUrl.setLongUrl(longUrl);
                     shortenedUrl.setShortenedUrl(split[1]);
                 }
